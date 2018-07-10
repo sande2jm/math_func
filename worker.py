@@ -45,7 +45,7 @@ class Worker():
 		Use the file_in from init to extract this workers specific parameters
 		from json dictionary based on ec2 instance ids
 		"""		
-		with open(self.file_in, 'r') as f:
+		with open('parameters.txt', 'r') as f:
 			swarm_params = json.load(f)
 		self.params = swarm_params[self.my_id]
 		self.s3.Bucket('swarm-instructions').download_file('data/' + self.params['json'], 'data.json')
