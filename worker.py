@@ -72,7 +72,6 @@ class Worker():
 		while i < int(work_load * scaler) and self.state[0] != 'exit':
 			if i%100 == 0:
 				self.report(i, size=size)
-			results.append(self.create_image(x))
 			while self.state[0] == 'pause':
 				time.sleep(.3)
 				self.report(i,size=size)
