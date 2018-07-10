@@ -69,7 +69,7 @@ class Worker():
 
 		i = 0
 		start = time.clock()
-		while i < int(work_load * scalar) and self.state[0] != 'exit':
+		while i < int(work_load * scaler) and self.state[0] != 'exit':
 			if i%100 == 0:
 				self.report(i, size=size)
 			results.append(self.create_image(x))
