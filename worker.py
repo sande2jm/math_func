@@ -87,7 +87,6 @@ class Worker():
 		    },
 		    UpdateExpression='SET #x = :val1, #y = :val2, #z = :val3, #p = :val4',
 		    ExpressionAttributeNames={
-		        '#x': 'id',
 		        '#y': 'time',
 		        '#z': 'work_load',
 		        '#p': 'scaler'
