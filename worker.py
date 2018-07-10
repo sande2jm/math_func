@@ -28,7 +28,7 @@ class Worker():
 		self.controller_listener.start()
 		# self.s3.Bucket('swarm-instructions').download_file('instructions.txt', self.file_in)
 		self.dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
-		self.table = dynamodb.Table('test')
+		self.table = self.dynamodb.Table('test')
 		"""JSON SPECIFIC VARIABLES"""
 		self.file_out = None
 		self.data = None
@@ -77,7 +77,7 @@ class Worker():
 				self.report(i,size=size)
 			i += 1
 		end = time.clock()
-		put_in_Dynamo(self.my_id,(end-start), work_load, scalar)
+		self.put_in_Dynamo(self.my_id,(end-start), work_load, scalar)
 
 	def put_in_Dynamo(self, *args):
 		_id,time, work_load, scalar = args
