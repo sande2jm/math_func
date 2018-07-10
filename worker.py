@@ -77,10 +77,10 @@ class Worker():
 				self.report(i,size=size)
 			i += 1
 		end = time.clock()
-		self.put_in_Dynamo(self.my_id,(end-start), work_load, scalar)
+		self.put_in_Dynamo(self.my_id,(end-start), work_load, scaler)
 
 	def put_in_Dynamo(self, *args):
-		_id,time, work_load, scalar = args
+		_id,time, work_load, scaler = args
 		response = self.table.update_item(
 		    Key={
 		    'id': self.my_id
@@ -90,14 +90,14 @@ class Worker():
 		        '#x': 'id',
 		        '#y': 'time',
 		        '#z': 'work_load',
-		        '#p': 'scalar'
+		        '#p': 'scaler'
 
 		    },
 		    ExpressionAttributeValues={
 		        ':val1': _id,
 		        ':val2': decimal.Decimal(str(time)),
 		        ':val3': decimal.Decimal(work_load),
-		        ':val4': decimal.Decimal(str(scalar))
+		        ':val4': decimal.Decimal(str(scaler))
 		    }
 		)
 
