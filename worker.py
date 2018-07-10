@@ -36,7 +36,7 @@ class Worker():
 
 	def check_in(self):
 		while True:
-			with open('worker/state.txt', 'r') as f:
+			with open(self.direc + '/state.txt', 'r') as f:
 				self.state[0] = f.read()
 				time.sleep(3)
 
