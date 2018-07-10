@@ -6,6 +6,7 @@ from subprocess import check_output
 from helper import *
 from threading import Thread
 import time
+import decimal
 
 class Worker():
 
@@ -26,8 +27,8 @@ class Worker():
 		self.controller_listener = Thread(target=self.check_in, daemon=True)
 		self.controller_listener.start()
 		# self.s3.Bucket('swarm-instructions').download_file('instructions.txt', self.file_in)
-		# self.dynamodb = boto3.resource('dynamodb', region_name='us-east-1', endpoint_url="http://localhost:8000")
-		# self.table = dynamodb.Table('swarm')
+		self.dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
+		self.table = dynamodb.Table('test')
 		"""JSON SPECIFIC VARIABLES"""
 		self.file_out = None
 		self.data = None
@@ -65,8 +66,8 @@ class Worker():
 			print("Waiting for GO") 
 			time.sleep(.3)
 
-		results = []
 		i = 0
+		start = time.clock()
 		while i < work_load * scalar and self.state[0] != 'exit':
 			if i%100 == 0:
 				self.report(i, size=size)
@@ -75,7 +76,30 @@ class Worker():
 				time.sleep(.3)
 				self.report(i,size=size)
 			i += 1
-		msf.pickle_dump(results, self.file_out)
+		end = time.clock()
+		put_in_Dynamo(self.my_id,(end-start), work_load, scalar)
+
+	def put_in_Dynamo(self, *args):
+		_id,time, work_load, scalar = args
+		response = self.table.update_item(
+		    Key={
+		    'id': self.my_id
+		    },
+		    UpdateExpression='SET #x = :val1, #y = :val2, #z = :val3, #p = :val4',
+		    ExpressionAttributeNames={
+		        '#x': 'id',
+		        '#y': 'time',
+		        '#z': 'work_load',
+		        '#p': 'scalar'
+
+		    },
+		    ExpressionAttributeValues={
+		        ':val1': _id,
+		        ':val2': decimal.Decimal(str(time)),
+		        ':val3': decimal.Decimal(work_load),
+		        ':val4': decimal.Decimal(str(scalar))
+		    }
+		)
 
 	def create_image(self,elem):
 		#print(elem)
