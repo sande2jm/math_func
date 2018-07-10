@@ -71,7 +71,7 @@ class Worker():
 		start = time.clock()
 		while i < int(work_load * scaler) and self.state[0] != 'exit':
 			if i%100 == 0:
-				self.report(i, size=size)
+				self.report(i, size=int(work_load * scaler))
 			while self.state[0] == 'pause':
 				time.sleep(.3)
 				self.report(i,size=size)
