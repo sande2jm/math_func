@@ -85,7 +85,7 @@ class Worker():
 		    Key={
 		    'id': self.my_id
 		    },
-		    UpdateExpression='SET #x = :val1, #y = :val2, #z = :val3, #p = :val4',
+		    UpdateExpression='SET #y = :val2, #z = :val3, #p = :val4',
 		    ExpressionAttributeNames={
 		        '#y': 'time',
 		        '#z': 'work_load',
@@ -93,7 +93,6 @@ class Worker():
 
 		    },
 		    ExpressionAttributeValues={
-		        ':val1': _id,
 		        ':val2': decimal.Decimal(str(time)),
 		        ':val3': decimal.Decimal(work_load),
 		        ':val4': decimal.Decimal(str(scaler))
